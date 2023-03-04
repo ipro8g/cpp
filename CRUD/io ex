@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+
+#pragma pack(push, r1, 1)
+struct Header {
+    char id[15];
+    int length;
+    int count;
+};
+#pragma pack(pop, r1)
+
+int main() {
+  Header h = {"alalalala", 5, 10};
+
+  std::fstream fh;
+  fh.open("test.txt", std::fstream::out | std::fstream::binary);
+  fh.write((char*)&h, sizeof(Header));
+  fh.close();
+
+  fh.open("test.txt", std::fstream::in | std::fstream::binary);
+
+  fh.read((char*)&h.id, sizeof(h.id));
+  fh.read((char*)&h.length, sizeof(h.length));
+  fh.read((char*)&h.count, sizeof(h.count));
+
+  fh.close();
+
+  std::cout << h.id << " " << h.length << " " << h.count << std::endl;
+}
